@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>Lusive.Snowflake</id>
+        <version>1.1.0</version>
+        <authors>Lusive</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <license type="expression">MIT</license>
+        <description>A Twitter Snowflake format unique identifier.</description>
+        <repository type="git" url="https://github.com/frostylucas/snowflake.git" branch="main"/>
+        <copyright>$copyright$</copyright>
+        <tags>snowflake uid</tags>
+    </metadata>
+</package>
