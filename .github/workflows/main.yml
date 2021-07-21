@@ -6,14 +6,13 @@ on:
     - "v*.*.*"
     
   workflow_dispatch:
-  
-env:
-  PROJECT_FILE: src/Snowflake.csproj
 
 jobs:
   publish:
     runs-on: windows-latest
-    
+    env:
+      PROJECT_FILE: src/Snowflake.csproj
+  
     steps:
       - uses: actions/checkout@v2
       - uses: microsoft/setup-msbuild@v1.0.2
@@ -28,13 +27,13 @@ jobs:
           echo ("VERSION=" + $env:GITHUB_REF.replace('refs/tags/v', '')) >> $env:GITHUB_ENV
 
       - name: Install dependencies
-        run: nuget restore $PROJECT_FILE
+        run: nuget restore $env:PROJECT_FILE
 
       - name: Build
-        run: msbuild $PROJECT_FILE -t:build
+        run: msbuild $env:PROJECT_FILE -t:build
           
       - name: Pack
-        run: nuget pack $PROJECT_FILE -Version $env:VERSION
+        run: nuget pack $env:PROJECT_FILE -Version $env:VERSION
       
       - name: Push
         run: nuget push Lusive.Snowflake.${{ env.VERSION }}.nupkg -Source https://api.nuget.org/v3/index.json
