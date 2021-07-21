@@ -1,0 +1,39 @@
+name: .NET
+
+on:
+  push:
+    tags:
+    - "v*.*.*"
+    
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    env:
+      PROJECT_FILE: src/Snowflake.csproj
+  
+    steps:
+      - uses: actions/checkout@v2
+      - uses: microsoft/setup-msbuild@v1.0.2
+      - uses: nuget/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+          nuget-version: '5.x'
+      
+      - name: Extract Version
+        run: |
+          chcp 65001 #set code page to utf-8
+          echo ("VERSION=" + $env:GITHUB_REF.replace('refs/tags/v', '')) >> $env:GITHUB_ENV
+
+      - name: Install dependencies
+        run: nuget restore $env:PROJECT_FILE
+
+      - name: Build
+        run: msbuild $env:PROJECT_FILE -t:build
+          
+      - name: Pack
+        run: nuget pack $env:PROJECT_FILE -Version $env:VERSION
+      
+      - name: Push
+        run: nuget push Lusive.Snowflake.${{ env.VERSION }}.nupkg -Source https://api.nuget.org/v3/index.json
