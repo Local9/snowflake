@@ -11,4 +11,7 @@
         <copyright>$copyright$</copyright>
         <tags>snowflake uid</tags>
     </metadata>
+    <files>
+        <file src="bin\$configuration$\$id$.pdb" target="lib\net452\"/>
+    </files>
 </package>
